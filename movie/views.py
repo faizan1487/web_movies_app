@@ -1,12 +1,5 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from .models import Movie
-from .forms import MovieForm
-
-from django.shortcuts import render, redirect
-from .forms import MovieForm
-from .models import Movie
-
-from django.shortcuts import render, redirect
 from .forms import MovieForm
 
 
@@ -17,8 +10,6 @@ def movie_listing(request):
 def movie_detail(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
     return render(request, 'movie_detail.html', {'movie': movie})
-
-
 
 
 def create_movie(request):
@@ -32,8 +23,6 @@ def create_movie(request):
     return render(request, 'create_movie.html', {'form': form})
 
 
-
-
 def update_movie(request, pk):
     movie = Movie.objects.get(pk=pk)
     if request.method == 'POST':
@@ -45,3 +34,18 @@ def update_movie(request, pk):
     else:
         form = MovieForm(instance=movie)
     return render(request, 'update_movie.html', {'form': form, 'movie': movie})
+
+
+
+def delete_movie(request, pk):
+    # Get the movie object by its primary key (pk)
+    movie = get_object_or_404(Movie, pk=pk)
+    
+    if request.method == 'POST':
+        # Delete the movie
+        movie.delete()
+        # Redirect to the movie listing page after deletion
+        return redirect('movie_listing')
+    
+    # If the request method is not POST, render the confirmation page
+    return render(request, 'delete_movie.html', {'movie': movie})

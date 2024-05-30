@@ -13,7 +13,6 @@
     <div class="container">
         <h1>{{ movie.name }}</h1>
         <img src="{{ movie.img.url }}" alt="{{ movie.name }}" class="img-fluid">
-        {% comment %} <img src="{% static movie.imgPath %}" alt="{{ movie.name }}" class="img-fluid"> {% endcomment %}
 
         <p><strong>Description:</strong> {{ movie.description }}</p>
         <p><strong>Duration:</strong> {{ movie.duration }} minutes</p>
@@ -24,6 +23,12 @@
         
         <!-- Edit button -->
         <a href="{% url 'update_movie' movie.pk %}" class="btn btn-primary">Edit</a>
+        
+        <!-- Delete button -->
+        <form action="{% url 'delete_movie' movie.pk %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
         
         <a href="{% url 'movie_listing' %}" class="btn btn-secondary">Back to Movie Listing</a>
     </div>
