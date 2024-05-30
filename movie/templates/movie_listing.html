@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Listing</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Listing</h1>
+        <!-- Search input field -->
+        <input type="text" id="search" placeholder="Search movies...">
+        <!-- Create new movie button -->
+        <a href="{% url 'create_movie' %}" class="btn btn-primary mt-3">Create New Movie</a>
+        <!-- Movie list -->
+        <ul id="movie-list" class="list-group mt-3">
+            {% for movie in movies %}
+            <li class="list-group-item"><a href="{% url 'movie_detail' movie.id %}">{{ movie.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS for search functionality -->
+    <script>
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                var searchText = $(this).val().toLowerCase();
+                $('#movie-list li').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
